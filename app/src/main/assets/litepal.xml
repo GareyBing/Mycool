@@ -3,8 +3,8 @@
 
     <version value="1"/>
     <list>
-        <mapping class="com.mycool.android.db.Province" />
-        <mapping class="com.mycool.android.db.City" />
-        <mapping class="com.mycool.android.db.County"/>
+        <mapping class="com.example.hugb.mycool.db.Province" />
+        <mapping class="com.example.hugb.mycool.db.City" />
+        <mapping class="com.example.hugb.mycool.db.County"/>
     </list>
 </litepal>
