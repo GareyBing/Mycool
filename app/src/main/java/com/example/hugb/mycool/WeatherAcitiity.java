@@ -1,5 +1,6 @@
 package com.example.hugb.mycool;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.hugb.mycool.gson.Forecast;
 import com.example.hugb.mycool.gson.Weather;
+import com.example.hugb.mycool.service.AutoUpdateService;
 import com.example.hugb.mycool.util.HttpUtil;
 import com.example.hugb.mycool.util.Utility;
 
@@ -193,7 +195,7 @@ public class WeatherAcitiity extends AppCompatActivity {
     }
 
     /*show weather informations*/
-    public void showWetherInfo(Weather weather) {
+    private void showWetherInfo(Weather weather) {
         String cityName = weather.basic.cityName;
         String updateTime = weather.basic.update.updateTime.split("")[1];
         String degree = weather.now.temperature + "°C";
@@ -231,7 +233,8 @@ public class WeatherAcitiity extends AppCompatActivity {
             carWashText.setText(carwash);
             sportText.setText(sport);
             weatherLayout.setVisibility(View.VISIBLE);
-
+            Intent intent = new Intent(this, AutoUpdateService.class);
+            startService(intent);
         }
 
     }
