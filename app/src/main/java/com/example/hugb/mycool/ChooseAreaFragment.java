@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.hugb.mycool.db.City;
 import com.example.hugb.mycool.db.County;
 import com.example.hugb.mycool.db.Province;
+import com.example.hugb.mycool.gson.Weather;
 import com.example.hugb.mycool.util.HttpUtil;
 import com.example.hugb.mycool.util.Utility;
 
@@ -101,10 +102,17 @@ public class ChooseAreaFragment extends Fragment {
                     queryCounties();
                 }else if(currentLevel == LEVEL_COUNTY) {
                     String weatherId = countyList.get(position).getWeatherId();
-                    Intent intent = new Intent(getActivity(), WeatherAcitiity.class);
-                    intent.putExtra("weather_id", weatherId);
-                    startActivity(intent);
-                    getActivity().finish();
+                    if(getActivity() instanceof MainActivity) {
+                        Intent intent = new Intent(getActivity(), WeatherAcitiity.class);
+                        intent.putExtra("weather_id", weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }else if(getActivity() instanceof WeatherAcitiity) {
+                        WeatherAcitiity activity = (WeatherAcitiity) getActivity();
+                        activity.drawerLayout.closeDrawers();
+                        activity.swipeRefresh.setRefreshing(true);
+                        activity.requestWeather(weatherId);
+                    }
                 }
             }
         });
