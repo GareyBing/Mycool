@@ -6,6 +6,8 @@ import android.util.Log;
 import com.example.hugb.mycool.db.City;
 import com.example.hugb.mycool.db.County;
 import com.example.hugb.mycool.db.Province;
+import com.example.hugb.mycool.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,6 +89,23 @@ public class Utility {
             }
         }
         return false;
+    }
+
+
+    /*
+    * 将返回的json数据解析成weather 实体类
+    * */
+
+    public static Weather handleWeatherResponse (String respone) {
+        try {
+            JSONObject jsonObject = new JSONObject(respone);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 
