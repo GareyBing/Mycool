@@ -1,5 +1,8 @@
 package com.example.hugb.mycool;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -54,6 +57,10 @@ public class WeatherAcitiity extends AppCompatActivity {
 
     public DrawerLayout drawerLayout;
     private Button navButton;
+
+    private String cityName;
+    private String degree ;
+    private String weatherInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,10 +204,10 @@ public class WeatherAcitiity extends AppCompatActivity {
 
     /*show weather informations*/
     private void showWetherInfo(Weather weather) {
-        String cityName = weather.basic.cityName;
+        cityName = weather.basic.cityName;
         String updateTime = weather.basic.update.updateTime.split("")[1];
-        String degree = weather.now.temperature + "°C";
-        String weatherInfo = weather.now.more.info;
+        degree = weather.now.temperature + "°C";
+        weatherInfo = weather.now.more.info;
         titleCity.setText(cityName);
         titleUpdateTime.setText(updateTime);
         degreeText.setText(degree);
@@ -236,7 +243,27 @@ public class WeatherAcitiity extends AppCompatActivity {
             weatherLayout.setVisibility(View.VISIBLE);
             Intent intent = new Intent(this, AutoUpdateService.class);
             startService(intent);
+            notification ();
         }
 
+    }
+
+    private void notification (){
+        Intent intent = new Intent(this, WeatherAcitiity.class);
+        PendingIntent pang = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.Builder builder = new Notification.Builder(this);
+        builder.setSmallIcon(R.drawable.logo);
+        //builder.setContentTitle("随心天气");
+        String infomations ="    "+ cityName + "  " + degree + "  " + weatherInfo;
+        builder.setWhen(System.currentTimeMillis());
+        builder.setContentText(infomations);
+       // builder.setPriority(Notification.PRIORITY_MAX);
+        builder.setOngoing(true);
+        builder.setContentIntent(pang);
+
+        Notification notification = builder.build();
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(100, notification);
     }
 }
